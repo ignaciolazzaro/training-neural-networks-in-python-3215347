@@ -94,7 +94,7 @@ class MultiLayerPerceptron:
 
         # STEP 2: Calculate the MSE
         error = (y - outputs)
-        MSE = sum(error ** 2) / self.layers[-1]
+        MSE = sum(error ** 2) / self.layers[-1] # Divided by the number of neurons in the output layer.
 
         # STEP 3: Calculate the output error terms
         self.d[-1] = outputs * (1 - outputs) * (error)
@@ -107,10 +107,10 @@ class MultiLayerPerceptron:
                     fwd_error += self.network[i+1][k].weights[h] * self.d[i+1][k]               
                 self.d[i][h] = self.values[i][h] * (1-self.values[i][h]) * fwd_error
 
-        # STEPS 5 & 6: Calculate the deltas and update the weights
+        # STEPS 5 & 6: Calculate the deltas and update the weights (i goes through the layers, j goes through the neurons, k goes through the inputs)
         for i in range(1, len(self.network)):
             for j in range(self.layers[i]):
-                for k in range(self.layers[i-1]+1):
+                for k in range(self.layers[i-1]+1): # k goes from 0 to the number of neurons in the previous layer + 1 (because of the bias weight)
                     if k == self.layers[i-1]:
                         delta = self.eta * self.d[i][j] * self.bias
                     else:
